@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+        <head>
+                <meta charset="utf-8">
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <title>NAS Controller</title>
+        </head>
+        <body>
+                <p id="stats"></p>
+                <input type="text" placeholder="Password here">
+                <button type="button" name="button">Button</button>
+                <button type="button" name="button">Off</button>
+        </body>
+</html>
+<script type="text/javascript">
+window.onload = getStatus();
+
+        function getStatus() {
+		var url = "http://nas.amtstl.xyz/status";
+		var http = new XMLHttpRequest();
+		http.onreadystatechange = function() {
+			if (this.readyState == 4) {
+                                // document.getElementById('stats').innerHTML
+			}
+		};
+		http.open("GET", url, true);
+		http.send();
+	}
+
+        function turnOn() {
+		var url = "http://nas.amtstl.xyz/on";
+		var http = new XMLHttpRequest();
+		http.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				alert("NAS Disabled");
+			}
+		};
+		http.open("GET", url, true);
+		http.send();
+	}
+
+        function turnOff() {
+		var url = "http://nas.amtstl.xyz/off";
+		var http = new XMLHttpRequest();
+		http.onreadystatechange = function() {
+			if (this.readyState == 4) {
+				alert("NAS Disabled");
+			}
+		};
+		http.open("GET", url, true);
+		http.send();
+	}
+</script>
