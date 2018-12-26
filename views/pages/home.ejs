@@ -7,47 +7,58 @@
         </head>
         <body>
                 <p id="stats"></p>
-                <input type="text" placeholder="Password here">
-                <button type="button" name="button">Button</button>
-                <button type="button" name="button">Off</button>
+                <input id="psswd" placeholder="Password here" value="123456">
+                <button id="on">On</button>
+                <button id="off">Off</button>
         </body>
 </html>
 <script type="text/javascript">
 window.onload = getStatus();
 
-        function getStatus() {
-		var url = "http://nas.amtstl.xyz/status";
-		var http = new XMLHttpRequest();
-		http.onreadystatechange = function() {
-			if (this.readyState == 4) {
-                                // document.getElementById('stats').innerHTML
-			}
-		};
-		http.open("GET", url, true);
-		http.send();
-	}
+function getStatus() {
+        $.ajax({
+                url: 'http://localhost:1100/status',
+                success: function(response) {
+                        if (response.status) {
+                                // nas is on
+                                $('#stats').text('Status: Online');
+                                $('#stats').css('color', 'green');
+                        }
+                        else {
+                                $('#stats').text('Status: Offline');
+                                $('#stats').css('color', 'red');
+                        }
+                }
+        })
+}
 
-        function turnOn() {
-		var url = "http://nas.amtstl.xyz/on";
-		var http = new XMLHttpRequest();
-		http.onreadystatechange = function() {
-			if (this.readyState == 4) {
-				alert("NAS Disabled");
-			}
-		};
-		http.open("GET", url, true);
-		http.send();
-	}
+$("#on").click(function() {
+        $.post({
+                url: 'http://localhost:1100/on',
+                data: {password: $('#psswd').val()},
+                success: function (response) {
+                        if (response.error == null) {
+                                getStatus();
+                        }
+                        else {
+                                alert(response.msg);        
+                        }
+                }
+        })
+})
 
-        function turnOff() {
-		var url = "http://nas.amtstl.xyz/off";
-		var http = new XMLHttpRequest();
-		http.onreadystatechange = function() {
-			if (this.readyState == 4) {
-				alert("NAS Disabled");
-			}
-		};
-		http.open("GET", url, true);
-		http.send();
-	}
+$("#off").click(function() {
+        $.post({
+                url: 'http://localhost:1100/off',
+                data: {password: $('#psswd').val()},
+                success: function (response) {
+                        if (response.error == null) {
+                                getStatus();
+                        }
+                        else {
+                                alert(response.msg);
+                        }
+                }
+        })
+})
 </script>

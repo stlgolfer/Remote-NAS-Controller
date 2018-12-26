@@ -1,6 +1,6 @@
 var express = require('express');
-var fs = require("fs");
-var request = require('request');
+/*var fs = require("fs");
+var request = require('request');*/
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -19,22 +19,43 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+app.set('view engine', 'ejs');
 
 // render a nice webpage to turn it on and off
 app.get('/', (req, res) => {
         res.render('pages/home');
 })
 
-app.get('/on', (req, res) => {
-        if (req.{something}.password == "123456") {
+app.post('/on', (req, res) => {
+        if (req.body.password == "123456") {
                 nasstatus = true;
+                res.json({
+                        error: null,
+                        msg: "Success!"
+                })
+        }
+        else {
+                res.json({
+                        error: true,
+                        msg: "Incorrect Password"
+                })
         }
         // need to run a py script here to turn on the relay
 })
 
-app.get('/off', (req, res) => {
-        if (req.{something}.password == "123456") {
-
+app.post('/off', (req, res) => {
+        if (req.body.password == "123456") {
+                nasstatus = false;
+                res.json({
+                        error: null,
+                        msg: "Success!"
+                })
+        }
+        else {
+                res.json({
+                        error: true,
+                        msg: "Incorrect Password"
+                })
         }
         // need to py script here to turn off the relay
 })
@@ -45,7 +66,7 @@ app.get('/status', (req, res) => {
         })
 })
 
-var server = app.listen(config.port, function () {
+var server = app.listen(1100, function () {
           var host = server.address().address;
           var port = server.address().port;
 
