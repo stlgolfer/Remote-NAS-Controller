@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 
 // render a nice webpage to turn it on and off
 app.get('/', (req, res) => {
