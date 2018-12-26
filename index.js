@@ -27,8 +27,21 @@ app.get('/', (req, res) => {
 })
 
 app.post('/on', (req, res) => {
-        if (req.body.password == "123456") {
+        if (req.body.password == "123456" && !nasstatus) {
                 nasstatus = true;
+
+                // run python toggle script
+                const { spawn } = require('child_process');
+                const py = spawn('python',['toggle.py']);
+
+                py.stdout.on('data', function(data) {
+                        console.log(data);
+                })
+
+                py.stdout.on('error', (err) => {
+                        console.log(err);
+                })
+
                 res.json({
                         error: null,
                         msg: "Success!"
@@ -37,15 +50,28 @@ app.post('/on', (req, res) => {
         else {
                 res.json({
                         error: true,
-                        msg: "Incorrect Password"
+                        msg: "Already On or Incorrect Password"
                 })
         }
         // need to run a py script here to turn on the relay
 })
 
 app.post('/off', (req, res) => {
-        if (req.body.password == "123456") {
+        if (req.body.password == "123456" && nasstatus) {
                 nasstatus = false;
+
+                // run python toggle script
+                const { spawn } = require('child_process');
+                const py = spawn('python',['toggle.py']);
+
+                py.stdout.on('data', function(data) {
+                        console.log(data);
+                })
+
+                py.stdout.on('error', (err) => {
+                        console.log(err);
+                })
+
                 res.json({
                         error: null,
                         msg: "Success!"
@@ -54,7 +80,7 @@ app.post('/off', (req, res) => {
         else {
                 res.json({
                         error: true,
-                        msg: "Incorrect Password"
+                        msg: "Already Off or Incorrect Password"
                 })
         }
         // need to py script here to turn off the relay
